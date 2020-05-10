@@ -1,0 +1,13 @@
+{
+    "name": "ItemUtils-Pagination",
+    "version": "1.0.0",
+    "description": "An ItemUtils extension to add support for easily creating paginated menus with minimal code footprint!",
+    "main": "out/index.js",
+    "author": "SN10Hub",
+    "tags": [],
+    "dependencies": ["ItemUtils"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SN10Hub/ItemUtils-Pagination"
+    }
+}
