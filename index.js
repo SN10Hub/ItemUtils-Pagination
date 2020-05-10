@@ -56,7 +56,9 @@ module.exports = {
                         _actions[slot] = emptySlotAction;
                     } else {
                         const _el = array[i];
-                        const {item = new ItemBuilder("AIR"), action = (_event) => {}} = loopedElementHandler(_el, i);
+                        const data = loopedElementHandler(_el, i);
+                        const item = data.item !== undefined ? data.item : new ItemBuilder("AIR");
+                        const action = data.action !== undefined ? data.action : new ItemBuilder("AIR");
                         _items[slot] = item;
                         _actions[slot] = InventoryClickEvent => action(InventoryClickEvent);
                     }

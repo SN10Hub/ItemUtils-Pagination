@@ -37,6 +37,8 @@ module.exports = {
 
     try {
       var buildPage = function buildPage(_ref2) {
+        var _objectSpread2, _objectSpread3;
+
         var array = _ref2.array,
             borderSlots = _ref2.borderSlots,
             borderItem = _ref2.borderItem,
@@ -55,8 +57,7 @@ module.exports = {
             alreadyOnLastPageAction = _ref2.alreadyOnLastPageAction,
             guiTitle = _ref2.guiTitle,
             guiRows = _ref2.guiRows,
-            loopedElementItem = _ref2.loopedElementItem,
-            loopedElementAction = _ref2.loopedElementAction,
+            loopedElementHandler = _ref2.loopedElementHandler,
             staticItems = _ref2.staticItems,
             staticActions = _ref2.staticActions,
             itemsPerPage = _ref2.itemsPerPage,
@@ -91,11 +92,14 @@ module.exports = {
             _actions[slot] = emptySlotAction;
           } else {
             (function () {
-              var _el = array[startIndex + index];
-              _items[slot] = loopedElementItem(startIndex + index);
+              var _el = array[_i];
+              var data = loopedElementHandler(_el, _i);
+              var item = data.item !== undefined ? data.item : new ItemBuilder("AIR");
+              var action = data.action !== undefined ? data.action : new ItemBuilder("AIR");
+              _items[slot] = item;
 
               _actions[slot] = function (InventoryClickEvent) {
-                return loopedElementAction(_el, InventoryClickEvent);
+                return action(InventoryClickEvent);
               };
             })();
           }
@@ -106,23 +110,16 @@ module.exports = {
           _actions[slot] = borderAction;
         });
 
-        var items = _objectSpread({}, staticItems, {}, _items); // Assigned after declaring the object because Babel cannot compile the code using the modern method.
+        var items = _objectSpread({}, staticItems, {}, _items, (_objectSpread2 = {}, _defineProperty(_objectSpread2, previousPageSlot, page <= 1 ? alreadyOnFirstPageItem : previousPageItem(page - 1)), _defineProperty(_objectSpread2, nextPageSlot, page >= pages ? alreadyOnLastPageItem : nextPageItem(page + 1)), _objectSpread2));
 
-
-        items[previousPageSlot] = page <= 1 ? alreadyOnFirstPageItem : previousPageItem(page - 1);
-        items[nextPageSlot] = page >= pages ? alreadyOnLastPageItem : nextPageItem(page + 1);
-
-        var actions = _objectSpread({}, staticActions, {}, _actions); // Assigned after declaring the object because Babel cannot compile the code using the modern method.
-
-
-        actions[previousPageSlot] = page <= 1 ? alreadyOnFirstPageAction : function (event) {
+        var actions = _objectSpread({}, staticActions, {}, _actions, (_objectSpread3 = {}, _defineProperty(_objectSpread3, previousPageSlot, page <= 1 ? alreadyOnFirstPageAction : function (event) {
           previousPageAction(event, page - 1);
           changePageMethod(event, page - 1);
-        };
-        actions[nextPageSlot] = page >= pages ? alreadyOnLastPageAction : function (event) {
+        }), _defineProperty(_objectSpread3, nextPageSlot, page >= pages ? alreadyOnLastPageAction : function (event) {
           nextPageAction(event, page + 1);
           changePageMethod(event, page + 1);
-        };
+        }), _objectSpread3));
+
         return {
           inventory: new InventoryBuilder(guiRows, guiTitle.replace(currentPagePlaceholder, page).replace(maxPagePlaceholder, pages), items),
           actions: actions
@@ -160,12 +157,13 @@ module.exports = {
             guiTitle = _settings$guiTitle === void 0 ? "".concat(currentPagePlaceholder, "/").concat(maxPagePlaceholder) : _settings$guiTitle,
             _settings$guiRows = settings.guiRows,
             guiRows = _settings$guiRows === void 0 ? 6 : _settings$guiRows,
-            _settings$loopedEleme = settings.loopedElementItem,
-            loopedElementItem = _settings$loopedEleme === void 0 ? function (_el) {
-          return new ItemBuilder("AIR");
+            _settings$loopedEleme = settings.loopedElementHandler,
+            loopedElementHandler = _settings$loopedEleme === void 0 ? function (_el, _index) {
+          return {
+            item: new ItemBuilder("AIR"),
+            action: function action(_event) {}
+          };
         } : _settings$loopedEleme,
-            _settings$loopedEleme2 = settings.loopedElementAction,
-            loopedElementAction = _settings$loopedEleme2 === void 0 ? function (_el, _event) {} : _settings$loopedEleme2,
             _settings$staticItems = settings.staticItems,
             staticItems = _settings$staticItems === void 0 ? {} : _settings$staticItems,
             _settings$staticActio = settings.staticActions,
@@ -218,8 +216,7 @@ module.exports = {
             alreadyOnLastPageAction: alreadyOnLastPageAction,
             guiTitle: guiTitle,
             guiRows: guiRows,
-            loopedElementItem: loopedElementItem,
-            loopedElementAction: loopedElementAction,
+            loopedElementHandler: loopedElementHandler,
             staticItems: staticItems,
             staticActions: _staticActions,
             itemsPerPage: itemsPerPage,
@@ -275,12 +272,13 @@ module.exports = {
             guiTitle = _settings$guiTitle2 === void 0 ? "".concat(currentPagePlaceholder, "/").concat(maxPagePlaceholder) : _settings$guiTitle2,
             _settings$guiRows2 = settings.guiRows,
             guiRows = _settings$guiRows2 === void 0 ? 6 : _settings$guiRows2,
-            _settings$loopedEleme3 = settings.loopedElementItem,
-            loopedElementItem = _settings$loopedEleme3 === void 0 ? function (_el) {
-          return new ItemBuilder("AIR");
-        } : _settings$loopedEleme3,
-            _settings$loopedEleme4 = settings.loopedElementAction,
-            loopedElementAction = _settings$loopedEleme4 === void 0 ? function (_el, _event) {} : _settings$loopedEleme4,
+            _settings$loopedEleme2 = settings.loopedElementHandler,
+            loopedElementHandler = _settings$loopedEleme2 === void 0 ? function (_el, _index) {
+          return {
+            item: new ItemBuilder("AIR"),
+            action: function action(_event) {}
+          };
+        } : _settings$loopedEleme2,
             _settings$staticItems2 = settings.staticItems,
             staticItems = _settings$staticItems2 === void 0 ? {} : _settings$staticItems2,
             _settings$staticActio2 = settings.staticActions,
@@ -343,8 +341,7 @@ module.exports = {
           alreadyOnLastPageAction: alreadyOnLastPageAction,
           guiTitle: guiTitle,
           guiRows: guiRows,
-          loopedElementItem: loopedElementItem,
-          loopedElementAction: loopedElementAction,
+          loopedElementHandler: loopedElementHandler,
           staticItems: staticItems,
           staticActions: _staticActions,
           itemsPerPage: itemsPerPage,
@@ -365,7 +362,8 @@ module.exports = {
       return {
         ItemBuilder: ItemBuilder,
         InventoryBuilder: InventoryBuilder,
-        GUIManager: GUIManager
+        GUIManager: GUIManager,
+        registerItemBuilderCustomOption: ItemUtils.registerItemBuilderCustomOption
       };
     } catch (e) {
       log("Injection failed! Perhaps you've passed in a malformed ItemUtils instance?");
