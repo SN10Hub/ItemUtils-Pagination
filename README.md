@@ -14,7 +14,7 @@
  ```
 ## Setup with ItemUtils-Pagination (Repos)
  ```js
- const req = package => Repos.require(Repos.getRepoIdByURL("https://repo.sn10hub.net"), package);
+ const req = _package => Repos.require(Repos.getRepoIdByURL("https://repo.sn10hub.net"), _package);
  const {ItemBuilder, InventoryBuilder, GUIManager} = req("ItemUtils-Pagination").inject(req("ItemUtils"));
  ```
 ## Instance Settings (Optional)
