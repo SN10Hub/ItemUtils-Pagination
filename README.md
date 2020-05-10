@@ -21,8 +21,11 @@
  Certain aspects of your ItemUtils-Pagination instance can be customized by passing in additional options while injecting. These options are:
 
  `globalPrefix` *(string, default "$")* - the prefix that will be used to separate the base ID from the page number when generating global paginated menus. Example: a menu with a base ID of hello, the default global prefix ($) and 3 pages will generate GUIs hello$1, hello$2 and hello$3.
+
  `currentPagePlaceholder` *(string or RegExp, default /%current%/g)* - a placeholder that can be used in menu titles to display the current page. Using a string will only parse the first instance of the placeholder, whereas using a RegExp can parse all instances of the placeholder.
+
  `maxPagePlaceholder` *(string or RegExp, default /%max%/g)* - a placeholder that can be used in menu titles to display the total number of pages. Using a string will only parse the first instance of the placeholder, whereas using a RegExp can parse all instances of the placeholder.
+ 
 # The different types of menus
  If you're already using the GUIManager from ItemUtils, you'll be pleased to know that both types of menus are fully supported with ItemUtils-Pagination, and both global and temporary paginated menus can be created. For the uninitiated, ItemUtils' GUIManager offers two types of menus: global and temporary. Global menus are pre-rendered, can be viewed by multiple players at a time, and are perfect for static menus, such as a help menu, a rules menu, or a shop. Temporary menus are completely generated on-the-fly, can only be viewed by one player at a time, and are deleted once the player closes them. Only the currently requested page is rendered for temporary menus, whereas the entire menu is rendered upon creation for global menus.
 ## Protection against mutation
